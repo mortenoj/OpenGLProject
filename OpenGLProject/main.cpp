@@ -15,6 +15,7 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include "shader.hpp"
+#include "texture.hpp"
 
 const int WINDOW_WIDTH = 640*2;
 const int WINDOW_HEIGHT = 480*2;
@@ -183,60 +184,8 @@ int main() {
     glBindVertexArray(0);
 
     // Texture init
-
-    // Texture 0
-    int imageWidth = 0;
-    int imageHeight = 0;
-
-    unsigned char* image = SOIL_load_image("res/images/cat.png", &imageWidth, &imageHeight, 0, SOIL_LOAD_RGBA);
-
-    GLuint texture0;
-    glGenTextures(1, &texture0);
-    glBindTexture(GL_TEXTURE_2D, texture0);
-
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-
-    if (!image) {
-        fprintf(stderr, "MAIN: Failed to load image\n");
-    } else {
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, imageWidth, imageHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
-        glGenerateMipmap(GL_TEXTURE_2D);
-    }
-
-    // Properly destroy references
-    glActiveTexture(0);
-    glBindTexture(GL_TEXTURE_2D, 0);
-    SOIL_free_image_data(image);
-
-    // Texture 1
-    int imageWidth1 = 0;
-    int imageHeight1 = 0;
-
-    unsigned char* image1 = SOIL_load_image("res/images/crate.png", &imageWidth1, &imageHeight1, 0, SOIL_LOAD_RGBA);
-
-    GLuint texture1;
-    glGenTextures(1, &texture1);
-    glBindTexture(GL_TEXTURE_2D, texture1);
-
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-
-    if (!image1) {
-        fprintf(stderr, "MAIN: Failed to load image1\n");
-    } else {
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, imageWidth1, imageHeight1, 0, GL_RGBA, GL_UNSIGNED_BYTE, image1);
-        glGenerateMipmap(GL_TEXTURE_2D);
-    }
-
-    // Properly destroy references
-    glActiveTexture(0);
-    glBindTexture(GL_TEXTURE_2D, 0);
-    SOIL_free_image_data(image1);
+    Texture texture0("res/images/cat.png", GL_TEXTURE_2D, 0);
+    Texture texture1("res/images/crate.png", GL_TEXTURE_2D, 1);
 
     // Init matrices
     glm::vec3 position(0.0f);
@@ -299,8 +248,8 @@ int main() {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
         // Update uniforms
-        coreProgram.setInt(0, "texture0");
-        coreProgram.setInt(1, "texture1");
+        coreProgram.setInt(texture0.getTextureUnit(), "texture0");
+        coreProgram.setInt(texture1.getTextureUnit(), "texture1");
 
         // Move, rotate, scale
         ModelMatrix = glm::mat4(1.0f);
@@ -329,11 +278,8 @@ int main() {
         coreProgram.use();
 
         // Activate texture
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, texture0);
-
-        glActiveTexture(GL_TEXTURE1);
-        glBindTexture(GL_TEXTURE_2D, texture1);
+        texture0.bind();
+        texture1.bind();
     
         // Bind vertex array object
         glBindVertexArray(VAO);

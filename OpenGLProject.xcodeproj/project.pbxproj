@@ -17,6 +17,7 @@
 		5ACDD22B23D4BF0E002BC756 /* image_DXT.c in Sources */ = {isa = PBXBuildFile; fileRef = 5ACDD21823D4BF0E002BC756 /* image_DXT.c */; };
 		5ACDD22C23D4BF0E002BC756 /* SOIL2.c in Sources */ = {isa = PBXBuildFile; fileRef = 5ACDD21B23D4BF0E002BC756 /* SOIL2.c */; };
 		5ACDD22D23D4BF0E002BC756 /* etc1_utils.c in Sources */ = {isa = PBXBuildFile; fileRef = 5ACDD22523D4BF0E002BC756 /* etc1_utils.c */; };
+		5ACDD23023D50754002BC756 /* texture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5ACDD22E23D50753002BC756 /* texture.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -71,6 +72,8 @@
 		5ACDD22723D4BF0E002BC756 /* stbi_pkm_c.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stbi_pkm_c.h; sourceTree = "<group>"; };
 		5ACDD22823D4BF0E002BC756 /* stbi_DDS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stbi_DDS.h; sourceTree = "<group>"; };
 		5ACDD22923D4BF0E002BC756 /* pvr_helper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pvr_helper.h; sourceTree = "<group>"; };
+		5ACDD22E23D50753002BC756 /* texture.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = texture.cpp; sourceTree = "<group>"; };
+		5ACDD22F23D50754002BC756 /* texture.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = texture.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -112,6 +115,8 @@
 				5ACDD1FB23D48D2F002BC756 /* main.cpp */,
 				5ACDD21023D4A531002BC756 /* shader.cpp */,
 				5ACDD21123D4A531002BC756 /* shader.hpp */,
+				5ACDD22E23D50753002BC756 /* texture.cpp */,
+				5ACDD22F23D50754002BC756 /* texture.hpp */,
 			);
 			path = OpenGLProject;
 			sourceTree = "<group>";
@@ -216,6 +221,7 @@
 				5ACDD21223D4A531002BC756 /* shader.cpp in Sources */,
 				5ACDD22B23D4BF0E002BC756 /* image_DXT.c in Sources */,
 				5ACDD22C23D4BF0E002BC756 /* SOIL2.c in Sources */,
+				5ACDD23023D50754002BC756 /* texture.cpp in Sources */,
 				5ACDD22D23D4BF0E002BC756 /* etc1_utils.c in Sources */,
 				5ACDD1FC23D48D2F002BC756 /* main.cpp in Sources */,
 			);
