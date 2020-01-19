@@ -23,14 +23,15 @@ struct Vertex {
     glm::vec3 position;
     glm::vec3 color;
     glm::vec2 texCoord;
+    glm::vec3 normal;
 };
 
 Vertex vertices[] = {
-    // Position                      // Color                     // TexCoord
-    { glm::vec3(-0.5f, 0.5f, 0.0f),  glm::vec3(1.0f, 0.0f, 0.0f), glm::vec2(0.0f, 1.0f) },
-    { glm::vec3(-0.5f, -0.5f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec2(0.0f, 0.0f) },
-    { glm::vec3(0.5f, -0.5f, 0.0f),  glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(1.0f, 0.0f) },
-    { glm::vec3(0.5f, 0.5f, 0.0f),   glm::vec3(0.0f, 1.0f, 0.0f), glm::vec2(1.0f, 1.0f) }
+    // Position                      // Color                     // TexCoord            // Normal
+    { glm::vec3(-0.5f, 0.5f, 0.0f),  glm::vec3(1.0f, 0.0f, 0.0f), glm::vec2(0.0f, 1.0f), glm::vec3(0.0f, 0.0f, -1.0f) },
+    { glm::vec3(-0.5f, -0.5f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec2(0.0f, 0.0f), glm::vec3(0.0f, 0.0f, -1.0f) },
+    { glm::vec3(0.5f, -0.5f, 0.0f),  glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(1.0f, 0.0f), glm::vec3(0.0f, 0.0f, -1.0f) },
+    { glm::vec3(0.5f, 0.5f, 0.0f),   glm::vec3(0.0f, 1.0f, 0.0f), glm::vec2(1.0f, 1.0f), glm::vec3(0.0f, 0.0f, -1.0f) }
 };
 
 unsigned nrOfVertices = sizeof(vertices) / sizeof(Vertex);
@@ -69,10 +70,10 @@ void updateInput(GLFWwindow* window, glm::vec3 &position, glm::vec3 &rotation, g
 
     // Rotation
     if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS) {
-        rotation.z -= 0.1f; 
+        rotation.y -= 0.1f; 
     }
     if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) {
-        rotation.z += 0.1f; 
+        rotation.y += 0.1f; 
     }
 
     // Scale
@@ -136,10 +137,10 @@ int main() {
 
 
     // Shader init
-    GLuint coreProgram = LoadShaders("res/shaders/core.vert", "res/shaders/core.frag");
-
+    Shader coreProgram("res/shaders/core.vert", "res/shaders/core.frag");
 
     // Model
+
     
     // VAO, VBO, EBO
     
@@ -173,6 +174,10 @@ int main() {
     // TexCoord
     glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*) offsetof(Vertex, texCoord));
     glEnableVertexAttribArray(2);
+
+    // Normal
+    glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*) offsetof(Vertex, normal));
+    glEnableVertexAttribArray(3);
 
     // Bind VAO 0
     glBindVertexArray(0);
@@ -268,13 +273,16 @@ int main() {
             farPlane
         );
 
-    // Init uniforms
-    glUseProgram(coreProgram);
-    glUniformMatrix4fv(glGetUniformLocation(coreProgram, "ModelMatrix"), 1, GL_FALSE, glm::value_ptr(ModelMatrix));
-    glUniformMatrix4fv(glGetUniformLocation(coreProgram, "ViewMatrix"), 1, GL_FALSE, glm::value_ptr(ViewMatrix));
-    glUniformMatrix4fv(glGetUniformLocation(coreProgram, "ProjectionMatrix"), 1, GL_FALSE, glm::value_ptr(ProjectionMatrix));
+    // Lights
+    glm::vec3 lightPos0(0.0f, 0.0f, 1.0f);
 
-    glUseProgram(0);
+    // Init uniforms
+    coreProgram.setMat4f(ModelMatrix, "ModelMatrix");
+    coreProgram.setMat4f(ViewMatrix, "ViewMatrix");
+    coreProgram.setMat4f(ProjectionMatrix, "ProjectionMatrix");
+
+    coreProgram.setVec3f(lightPos0, "lightPos0");
+    coreProgram.setVec3f(camPosition, "cameraPos");
 
     // Main loop
     while (!glfwWindowShouldClose(window)) {
@@ -290,12 +298,9 @@ int main() {
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
-        // Use a program
-        glUseProgram(coreProgram);
-
         // Update uniforms
-        glUniform1i(glGetUniformLocation(coreProgram, "texture0"), 0);
-        glUniform1i(glGetUniformLocation(coreProgram, "texture1"), 1);
+        coreProgram.setInt(0, "texture0");
+        coreProgram.setInt(1, "texture1");
 
         // Move, rotate, scale
         ModelMatrix = glm::mat4(1.0f);
@@ -305,7 +310,7 @@ int main() {
         ModelMatrix = glm::rotate(ModelMatrix, glm::radians(rotation.z), glm::vec3(0.0f, 0.0f, 1.0f));
         ModelMatrix = glm::scale(ModelMatrix, scale);
 
-        glUniformMatrix4fv(glGetUniformLocation(coreProgram, "ModelMatrix"), 1, GL_FALSE, glm::value_ptr(ModelMatrix));
+        coreProgram.setMat4f(ModelMatrix, "ModelMatrix");
 
         // Update projection matrix in case of resizing of window (should be done only when window is resizing)
         glfwGetFramebufferSize(window, &frameBufferWidth, &frameBufferHeight);
@@ -318,7 +323,10 @@ int main() {
             farPlane
         );
 
-        glUniformMatrix4fv(glGetUniformLocation(coreProgram, "ProjectionMatrix"), 1, GL_FALSE, glm::value_ptr(ProjectionMatrix));
+        coreProgram.setMat4f(ProjectionMatrix, "ProjectionMatrix");
+
+        // Use a program
+        coreProgram.use();
 
         // Activate texture
         glActiveTexture(GL_TEXTURE0);
@@ -347,10 +355,6 @@ int main() {
     // End of program ---
     glfwDestroyWindow(window);
     glfwTerminate();
-
-    // Delete shader program
-    glDeleteProgram(coreProgram);
-
 
     // Delete VAO and buffers
 
