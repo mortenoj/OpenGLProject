@@ -6,8 +6,10 @@
 
 class Shader {
 private:
-    // Pricate members
+    // Private members
     GLuint id;
+    const int versionMajor;
+    const int versionMinor;
 
     // Private functions
     std::string loadShaderSource(const char* fileName);
@@ -16,8 +18,13 @@ private:
 
 public:
     // Constructors/Destructor
-    Shader();
-    Shader(const char* vertexFile, const char* fragmentFile, const char* geometryFile = "");
+    Shader(
+            const int versionMajor,
+            const int versionMinor,
+            const char* vertexFile,
+            const char* fragmentFile,
+            const char* geometryFile = "");
+
     ~Shader();
 
     // Set uniform functions

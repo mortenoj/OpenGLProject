@@ -1,8 +1,7 @@
 #include "texture.hpp"
 
-Texture::Texture(const char* fileName, GLenum type, GLint textureUnit) {
+Texture::Texture(const char* fileName, GLenum type) {
     this->type = type;
-    this->textureUnit = textureUnit;
 
     unsigned char* image = SOIL_load_image(fileName, &this->width, &this->height, 0, SOIL_LOAD_RGBA);
 
@@ -59,8 +58,8 @@ Texture::~Texture() {
     glDeleteTextures(1, &this->id);
 }
 
-void Texture::bind() {
-    glActiveTexture(GL_TEXTURE0 + this->textureUnit);
+void Texture::bind(const GLint textureUnit) {
+    glActiveTexture(GL_TEXTURE0 + textureUnit);
     glBindTexture(this->type, this->id);
 }
 

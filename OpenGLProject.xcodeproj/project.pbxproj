@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5A3F965B23D6054F005DA28B /* material.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5A3F965923D6054F005DA28B /* material.cpp */; };
+		5A3F965E23D60FB6005DA28B /* vertex.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5A3F965C23D60FB6005DA28B /* vertex.cpp */; };
+		5A3F966123D61029005DA28B /* mesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5A3F965F23D61029005DA28B /* mesh.cpp */; };
+		5A3F966423D625B4005DA28B /* primitives.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5A3F966223D625B4005DA28B /* primitives.cpp */; };
+		5A3F966723D63CA2005DA28B /* game.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5A3F966523D63CA2005DA28B /* game.cpp */; };
 		5ACDD1FC23D48D2F002BC756 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5ACDD1FB23D48D2F002BC756 /* main.cpp */; };
 		5ACDD20423D48DA7002BC756 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5ACDD20323D48DA7002BC756 /* OpenGL.framework */; };
 		5ACDD20623D48DED002BC756 /* libGLEW.2.1.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5ACDD20523D48DEC002BC756 /* libGLEW.2.1.0.dylib */; };
@@ -43,6 +48,16 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		5A3F965923D6054F005DA28B /* material.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = material.cpp; sourceTree = "<group>"; };
+		5A3F965A23D6054F005DA28B /* material.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = material.hpp; sourceTree = "<group>"; };
+		5A3F965C23D60FB6005DA28B /* vertex.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = vertex.cpp; sourceTree = "<group>"; };
+		5A3F965D23D60FB6005DA28B /* vertex.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = vertex.hpp; sourceTree = "<group>"; };
+		5A3F965F23D61029005DA28B /* mesh.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = mesh.cpp; sourceTree = "<group>"; };
+		5A3F966023D61029005DA28B /* mesh.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = mesh.hpp; sourceTree = "<group>"; };
+		5A3F966223D625B4005DA28B /* primitives.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = primitives.cpp; sourceTree = "<group>"; };
+		5A3F966323D625B4005DA28B /* primitives.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = primitives.hpp; sourceTree = "<group>"; };
+		5A3F966523D63CA2005DA28B /* game.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = game.cpp; sourceTree = "<group>"; };
+		5A3F966623D63CA2005DA28B /* game.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = game.hpp; sourceTree = "<group>"; };
 		5ACDD1F823D48D2F002BC756 /* OpenGLProject */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = OpenGLProject; sourceTree = BUILT_PRODUCTS_DIR; };
 		5ACDD1FB23D48D2F002BC756 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		5ACDD20323D48DA7002BC756 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
@@ -117,6 +132,16 @@
 				5ACDD21123D4A531002BC756 /* shader.hpp */,
 				5ACDD22E23D50753002BC756 /* texture.cpp */,
 				5ACDD22F23D50754002BC756 /* texture.hpp */,
+				5A3F965923D6054F005DA28B /* material.cpp */,
+				5A3F965A23D6054F005DA28B /* material.hpp */,
+				5A3F965C23D60FB6005DA28B /* vertex.cpp */,
+				5A3F965D23D60FB6005DA28B /* vertex.hpp */,
+				5A3F965F23D61029005DA28B /* mesh.cpp */,
+				5A3F966023D61029005DA28B /* mesh.hpp */,
+				5A3F966223D625B4005DA28B /* primitives.cpp */,
+				5A3F966323D625B4005DA28B /* primitives.hpp */,
+				5A3F966523D63CA2005DA28B /* game.cpp */,
+				5A3F966623D63CA2005DA28B /* game.hpp */,
 			);
 			path = OpenGLProject;
 			sourceTree = "<group>";
@@ -220,10 +245,15 @@
 				5ACDD22A23D4BF0E002BC756 /* image_helper.c in Sources */,
 				5ACDD21223D4A531002BC756 /* shader.cpp in Sources */,
 				5ACDD22B23D4BF0E002BC756 /* image_DXT.c in Sources */,
+				5A3F965E23D60FB6005DA28B /* vertex.cpp in Sources */,
+				5A3F966423D625B4005DA28B /* primitives.cpp in Sources */,
 				5ACDD22C23D4BF0E002BC756 /* SOIL2.c in Sources */,
+				5A3F965B23D6054F005DA28B /* material.cpp in Sources */,
 				5ACDD23023D50754002BC756 /* texture.cpp in Sources */,
 				5ACDD22D23D4BF0E002BC756 /* etc1_utils.c in Sources */,
+				5A3F966123D61029005DA28B /* mesh.cpp in Sources */,
 				5ACDD1FC23D48D2F002BC756 /* main.cpp in Sources */,
+				5A3F966723D63CA2005DA28B /* game.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

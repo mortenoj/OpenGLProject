@@ -10,13 +10,12 @@ private:
     int width;
     int height;
     unsigned int type;
-    GLint textureUnit;
 
 public:
-    Texture(const char* fileName, GLenum type, GLint textureUnit);
+    Texture(const char* fileName, GLenum type);
     ~Texture();
 
-    void bind();
+    void bind(const GLint textureUnit);
     void unbind();
     void loadFromFile(const char* fileName);
 
@@ -24,6 +23,5 @@ public:
     inline GLuint getId() const { return this->id; }
     inline int getWidth() const { return this->width; }
     inline int getHeight() const { return this->height; }
-    inline GLuint getTextureUnit() const { return this->textureUnit; }
 };
 

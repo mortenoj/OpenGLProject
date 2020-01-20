@@ -17,9 +17,12 @@
 
 
 // Constructors/Destructor
-Shader::Shader() {}
-
-Shader::Shader(const char* vertexFile, const char* fragmentFile, const char* geometryFile) {
+Shader::Shader(
+        const int versionMajor,
+        const int versionMinor,
+        const char* vertexFile,
+        const char* fragmentFile,
+        const char* geometryFile) : versionMajor(versionMajor), versionMinor(versionMinor) {
     GLuint vertexShader = 0;
     GLuint geometryShader = 0;
     GLuint fragmentShader = 0;
@@ -55,6 +58,13 @@ std::string Shader::loadShaderSource(const char* fileName) {
 		getchar();
 		return 0;
 	}
+
+    std::string versionNr =
+        std::to_string(this->versionMajor) +
+        std::to_string(this->versionMinor) + 
+        "0";
+
+    shaderCode.replace(shaderCode.find("#version"), 12, "#version " + versionNr);
 
     return shaderCode;
 }
