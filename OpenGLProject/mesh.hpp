@@ -1,14 +1,8 @@
 #pragma once
 
-#include <vector>
-#include <glm/gtc/matrix_transform.hpp>
-
 #include "vertex.hpp"
 #include "shader.hpp"
 #include "primitives.hpp"
-#include "texture.hpp"
-#include "material.hpp"
-
 
 class Mesh {
 private:

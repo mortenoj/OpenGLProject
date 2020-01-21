@@ -1,8 +1,12 @@
 #pragma once
 
-#include <iostream>
+#include <vector>
+#include <fstream>
+#include <sstream>
+
 #include <GL/glew.h>
 #include <glm/glm.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 class Shader {
 private:
