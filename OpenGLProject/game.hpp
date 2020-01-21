@@ -1,6 +1,12 @@
 #pragma once
 
-#include "libs.hpp"
+#define GLEW_STATIC
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
+
+#include "texture.hpp"
+#include "material.hpp"
+#include "mesh.hpp"
 
 // ENUMS
 
@@ -50,7 +56,6 @@ private:
 
     // Lights
     std::vector<glm::vec3*> lights;
-
 
     // Static variables
 

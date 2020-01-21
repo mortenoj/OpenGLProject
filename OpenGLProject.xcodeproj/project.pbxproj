@@ -48,7 +48,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		5A3BC0DB23D763CF004DFEA5 /* libs.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = libs.hpp; sourceTree = "<group>"; };
 		5A3F965923D6054F005DA28B /* material.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = material.cpp; sourceTree = "<group>"; };
 		5A3F965A23D6054F005DA28B /* material.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = material.hpp; sourceTree = "<group>"; };
 		5A3F965C23D60FB6005DA28B /* vertex.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = vertex.cpp; sourceTree = "<group>"; };
@@ -143,7 +142,6 @@
 				5A3F966323D625B4005DA28B /* primitives.hpp */,
 				5A3F966523D63CA2005DA28B /* game.cpp */,
 				5A3F966623D63CA2005DA28B /* game.hpp */,
-				5A3BC0DB23D763CF004DFEA5 /* libs.hpp */,
 			);
 			path = OpenGLProject;
 			sourceTree = "<group>";

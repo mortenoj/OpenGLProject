@@ -6,7 +6,6 @@ int main() {
 
     // Main loop
     while (!game.getWindowShouldClose()) {
-        // Update input ---
         game.update();
         game.render();
     }
