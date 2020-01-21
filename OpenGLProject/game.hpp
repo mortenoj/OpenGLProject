@@ -9,17 +9,18 @@
 #include "mesh.hpp"
 
 // ENUMS
-
 enum ShaderEnum{ SHADER_CORE_PROGRAM = 0 };
-enum TextureEnum{ TEX_PUSHEEN0 = 0, TEX_CRATE1 = 1 };
+enum TextureEnum{
+    TEX_CAT = 0,
+    TEX_CAT_SPECULAR = 1,
+    TEX_CRATE = 2,
+    TEX_CRATE_SPECULAR = 3
+};
 enum MaterialEnum{ MAT_1 = 0 };
 enum MeshEnum{ MESH_QUAD = 0 };
 
-
 class Game {
 private:
-    // Private members
-    
     // Window
     GLFWwindow* window;
     const int WINDOW_WIDTH;
@@ -30,6 +31,20 @@ private:
     // OpenGL context
     const int GL_VERSION_MAJOR;
     const int GL_VERSION_MINOR;
+
+    // Delta time
+    float deltaTime;
+    float currentTime;
+    float lastTime;
+
+    // Mouse input
+    double lastMouseX;
+    double lastMouseY;
+    double mouseX;
+    double mouseY;
+    double mouseOffsetX;
+    double mouseOffsetY;
+    bool firstMouse;
 
     // Matrices
     glm::mat4 viewMatrix;
@@ -86,6 +101,10 @@ public:
     virtual ~Game();
 
     // Public functions
+    void updateDeltaTime();
+    void updateKeyboardInput();
+    void updateMouseInput();
+    void updateInput();
     void update();
     void render();
 
@@ -97,7 +116,4 @@ public:
 
     // Static functions
     static void framebufferResizeCallback(GLFWwindow* window, int fbW, int fbH);
-    static void updateInput(GLFWwindow* window);
-    static void updateInput(GLFWwindow* window, Mesh &mesh);
-
 };

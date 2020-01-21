@@ -25,6 +25,18 @@ Game::Game(
     this->zNear = 0.1f;
     this->zFar = 1000.0f;
 
+    this->deltaTime = 0.0f;
+    this->currentTime = 0.0f;
+    this->lastTime = 0.0f;
+
+    this->lastMouseX = 0.0;
+    this->lastMouseY = 0.0;
+    this->mouseX = 0.0;
+    this->mouseY = 0.0;
+    this->mouseOffsetX = 0.0;
+    this->mouseOffsetY = 0.0;
+    this->firstMouse = true;
+
     this->initGLFW();
     this->initWindow(title, resizable);
     this->initGLEW();
@@ -100,7 +112,9 @@ void Game::initOpenGLOptions() {
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-    //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); // WIREFRAME
+
+    // Inputs
+    glfwSetInputMode(this->window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 }
 
 void Game::initMatrices() {
@@ -131,7 +145,9 @@ void Game::initShaders() {
 
 void Game::initTextures() {
     this->textures.push_back(new Texture("res/images/cat.png", GL_TEXTURE_2D));
+    this->textures.push_back(new Texture("res/images/cat_spucular.png", GL_TEXTURE_2D));
     this->textures.push_back(new Texture("res/images/crate.png", GL_TEXTURE_2D));
+    this->textures.push_back(new Texture("res/images/crate_specular.png", GL_TEXTURE_2D));
 }
 
 void Game::initMaterials() {
@@ -141,10 +157,10 @@ void Game::initMaterials() {
 }
 
 void Game::initMeshes() {
-    Quad q = Quad();
+    Pyramid mesh = Pyramid();
 
     this->meshes.push_back(
-            new Mesh(&q,
+            new Mesh(&mesh,
                 glm::vec3(0.0f),
                 glm::vec3(0.0f),
                 glm::vec3(1.0f)
@@ -165,8 +181,9 @@ void Game::initUniforms() {
 }
 
 void Game::updateUniforms() {
-    // Update uniforms
-    this->materials[MAT_1]->sendToShader(*this->shaders[SHADER_CORE_PROGRAM]);
+    // Upate view matrix
+    this->viewMatrix = glm::lookAt(this->cameraPosition, this->cameraPosition + this->cameraFront, this->worldUp);
+    this->shaders[SHADER_CORE_PROGRAM]->setMat4f(this->viewMatrix, "ViewMatrix");
 
     // Update frame buffer to get new width and height 
     glfwGetFramebufferSize(this->window, &this->frameBufferWidth, &this->frameBufferHeight);
@@ -186,11 +203,74 @@ void Game::updateUniforms() {
 // Public functions
 
 // Update function
-void Game::update() {
-    // Update input
+void Game::updateDeltaTime() {
+    this->currentTime = static_cast<float>(glfwGetTime());
+    this->deltaTime = this->currentTime - this->lastTime;
+    this->lastTime = this->currentTime;
+}
+
+void Game::updateKeyboardInput() {
+    // Close window on ESC
+    if (glfwGetKey(this->window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
+        this->setWindowShouldClose();
+    }
+
+    // Camera
+    if (glfwGetKey(this->window, GLFW_KEY_W) == GLFW_PRESS) {
+        this->cameraPosition.z -= 0.01f;
+    }
+    if (glfwGetKey(this->window, GLFW_KEY_S) == GLFW_PRESS) {
+        this->cameraPosition.z += 0.01f;
+    }
+    if (glfwGetKey(this->window, GLFW_KEY_A) == GLFW_PRESS) {
+        this->cameraPosition.x -= 0.01f;
+    }
+    if (glfwGetKey(this->window, GLFW_KEY_D) == GLFW_PRESS) {
+        this->cameraPosition.x += 0.01f;
+    }
+
+    if (glfwGetKey(this->window, GLFW_KEY_SPACE) == GLFW_PRESS) {
+        this->cameraPosition.y += 0.01f;
+    }
+    if (glfwGetKey(this->window, GLFW_KEY_C) == GLFW_PRESS) {
+        this->cameraPosition.y -= 0.01f;
+    }
+}
+
+void Game::updateMouseInput() {
+    glfwGetCursorPos(this->window, &this->mouseX, &this->mouseY);
+
+    if (this->firstMouse) {
+        this->lastMouseX = this->mouseX;
+        this->lastMouseY = this->mouseY;
+        this->firstMouse = false;
+    }
+
+    // Calculate offset
+    this->mouseOffsetX = this->mouseX - this->lastMouseX;
+    this->mouseOffsetY = this->lastMouseY - this->mouseY;
+
+    // Set last mouse X and Y
+    this->lastMouseX = this->mouseX;
+    this->lastMouseY = this->mouseY;
+}
+
+void Game::updateInput() {
+    // Listen for inputs
     glfwPollEvents();
-    updateInput(this->window);
-    updateInput(this->window, *this->meshes[MESH_QUAD]);
+
+    // Update inputs
+    this->updateKeyboardInput();
+    this->updateMouseInput();
+}
+
+void Game::update() {
+    this->updateDeltaTime();
+    this->updateInput();
+
+    std::cout << "DT: " << this->deltaTime << std::endl;
+    std::cout << "Mouse OffsetX: " << this->mouseOffsetX << std::endl;
+    std::cout << "Mouse OffsetY: " << this->mouseOffsetY << std::endl;
 }
 
 // Render function
@@ -202,12 +282,15 @@ void Game::render() {
     // Update uniforms
     this->updateUniforms();
 
+    // Update uniforms
+    this->materials[MAT_1]->sendToShader(*this->shaders[SHADER_CORE_PROGRAM]);
+
     // Use a program
     this->shaders[SHADER_CORE_PROGRAM]->use();
 
     // Activate texture
-    this->textures[TEX_PUSHEEN0]->bind(0);
-    this->textures[TEX_CRATE1]->bind(1);
+    this->textures[TEX_CRATE]->bind(0);
+    this->textures[TEX_CRATE_SPECULAR]->bind(1);
 
     // Draw
     this->meshes[MESH_QUAD]->render(this->shaders[SHADER_CORE_PROGRAM]);
@@ -237,51 +320,4 @@ void Game::setWindowShouldClose() {
 // Callback method when resizing window
 void Game::framebufferResizeCallback(GLFWwindow* window, int fbW, int fbH) {
     glViewport(0, 0, fbW, fbH);
-}
-
-
-void Game::updateInput(GLFWwindow* window) {
-    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
-        glfwSetWindowShouldClose(window, GLFW_TRUE);
-    }
-}
-
-void Game::updateInput(GLFWwindow* window, Mesh &mesh) {
-    // Position 
-    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
-        //position.z += 0.001f; 
-        mesh.move(glm::vec3(0.0f, 0.0f, 0.001f));
-    }
-    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
-        //position.x += 0.001f; 
-        mesh.move(glm::vec3(0.001f, 0.0f, 0.0f));
-    }
-    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
-        //position.z -= 0.001f; 
-        mesh.move(glm::vec3(0.0f, 0.0f, -0.001f));
-    }
-    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
-        //position.x -= 0.001f; 
-        mesh.move(glm::vec3(-0.001f, 0.0f, 0.0f));
-    }
-
-    // Rotation
-    if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS) {
-        //rotation.y -= 0.1f; 
-        mesh.rotate(glm::vec3(0.0f, -0.1f, 0.0f));
-    }
-    if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) {
-        //rotation.y += 0.1f; 
-        mesh.rotate(glm::vec3(0.0f, 0.1f, 0.0f));
-    }
-
-    // Scale
-    if (glfwGetKey(window, GLFW_KEY_Z) == GLFW_PRESS) {
-        //scale += 0.01f; 
-        mesh.scaleMesh(glm::vec3(0.01f));
-    }
-    if (glfwGetKey(window, GLFW_KEY_X) == GLFW_PRESS) {
-        //scale -= 0.01f;
-        mesh.scaleMesh(glm::vec3(-0.01f));
-    }
 }

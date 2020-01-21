@@ -41,3 +41,15 @@ class Quad : public Primitive {
 public:
     Quad();
 };
+
+// Class for handling pyramids
+class Pyramid : public Primitive {
+public:
+    Pyramid();
+};
+
+// Class for handling cubes
+class Cube : public Primitive {
+public:
+    Cube();
+};
