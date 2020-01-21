@@ -2,14 +2,20 @@
 
 // Constructors/Destructor
 Game::Game(
-        const char* title,
-        const int width, const int height,
-        const int glMajVer, const int glMinVer,
-        bool resizable
-        ) : WINDOW_WIDTH(width),
+            const char* title,
+            const int width, const int height,
+            const int glMajVer, const int glMinVer,
+            bool resizable
+        ) :
+            WINDOW_WIDTH(width),
             WINDOW_HEIGHT(height),
             GL_VERSION_MAJOR(glMajVer),
-            GL_VERSION_MINOR(glMinVer) {
+            GL_VERSION_MINOR(glMinVer),
+            camera(
+                    glm::vec3(0.0f, 0.0f, 1.0f),
+                    glm::vec3(0.0f, 0.0f, 1.0f),
+                    glm::vec3(0.0f, 1.0f, 0.0f)
+                ) {
 
     this->window = NULL;
     this->frameBufferWidth = this->WINDOW_WIDTH;
@@ -145,7 +151,7 @@ void Game::initShaders() {
 
 void Game::initTextures() {
     this->textures.push_back(new Texture("res/images/cat.png", GL_TEXTURE_2D));
-    this->textures.push_back(new Texture("res/images/cat_spucular.png", GL_TEXTURE_2D));
+    this->textures.push_back(new Texture("res/images/cat_specular.png", GL_TEXTURE_2D));
     this->textures.push_back(new Texture("res/images/crate.png", GL_TEXTURE_2D));
     this->textures.push_back(new Texture("res/images/crate_specular.png", GL_TEXTURE_2D));
 }
@@ -177,13 +183,13 @@ void Game::initUniforms() {
     this->shaders[SHADER_CORE_PROGRAM]->setMat4f(this->projectionMatrix, "ProjectionMatrix");
 
     this->shaders[SHADER_CORE_PROGRAM]->setVec3f(*this->lights[0], "lightPos0");
-    this->shaders[SHADER_CORE_PROGRAM]->setVec3f(this->cameraPosition, "cameraPos");
 }
 
 void Game::updateUniforms() {
     // Upate view matrix
-    this->viewMatrix = glm::lookAt(this->cameraPosition, this->cameraPosition + this->cameraFront, this->worldUp);
+    this->viewMatrix = this->camera.getViewMatrix();
     this->shaders[SHADER_CORE_PROGRAM]->setMat4f(this->viewMatrix, "ViewMatrix");
+    this->shaders[SHADER_CORE_PROGRAM]->setVec3f(this->camera.getPosition(), "cameraPos");
 
     // Update frame buffer to get new width and height 
     glfwGetFramebufferSize(this->window, &this->frameBufferWidth, &this->frameBufferHeight);
@@ -217,16 +223,16 @@ void Game::updateKeyboardInput() {
 
     // Camera
     if (glfwGetKey(this->window, GLFW_KEY_W) == GLFW_PRESS) {
-        this->cameraPosition.z -= 0.01f;
+        this->camera.move(this->deltaTime, FORWARD);
     }
     if (glfwGetKey(this->window, GLFW_KEY_S) == GLFW_PRESS) {
-        this->cameraPosition.z += 0.01f;
+        this->camera.move(this->deltaTime, BACKWARD);
     }
     if (glfwGetKey(this->window, GLFW_KEY_A) == GLFW_PRESS) {
-        this->cameraPosition.x -= 0.01f;
+        this->camera.move(this->deltaTime, LEFT);
     }
     if (glfwGetKey(this->window, GLFW_KEY_D) == GLFW_PRESS) {
-        this->cameraPosition.x += 0.01f;
+        this->camera.move(this->deltaTime, RIGHT);
     }
 
     if (glfwGetKey(this->window, GLFW_KEY_SPACE) == GLFW_PRESS) {
@@ -240,19 +246,19 @@ void Game::updateKeyboardInput() {
 void Game::updateMouseInput() {
     glfwGetCursorPos(this->window, &this->mouseX, &this->mouseY);
 
-    if (this->firstMouse) {
-        this->lastMouseX = this->mouseX;
-        this->lastMouseY = this->mouseY;
-        this->firstMouse = false;
-    }
+	if (this->firstMouse) {
+		this->lastMouseX = this->mouseX;
+		this->lastMouseY = this->mouseY;
+		this->firstMouse = false;
+	}
 
-    // Calculate offset
-    this->mouseOffsetX = this->mouseX - this->lastMouseX;
-    this->mouseOffsetY = this->lastMouseY - this->mouseY;
+	//Calc offset
+	this->mouseOffsetX = this->mouseX - this->lastMouseX;
+	this->mouseOffsetY = this->lastMouseY - this->mouseY;
 
-    // Set last mouse X and Y
-    this->lastMouseX = this->mouseX;
-    this->lastMouseY = this->mouseY;
+	//Set last X and Y
+	this->lastMouseX = this->mouseX;
+	this->lastMouseY = this->mouseY;
 }
 
 void Game::updateInput() {
@@ -262,15 +268,15 @@ void Game::updateInput() {
     // Update inputs
     this->updateKeyboardInput();
     this->updateMouseInput();
+
+    this->camera.updateInput(this->deltaTime, -1, this->mouseOffsetX, this->mouseOffsetY);
 }
 
 void Game::update() {
     this->updateDeltaTime();
     this->updateInput();
 
-    std::cout << "DT: " << this->deltaTime << std::endl;
-    std::cout << "Mouse OffsetX: " << this->mouseOffsetX << std::endl;
-    std::cout << "Mouse OffsetY: " << this->mouseOffsetY << std::endl;
+    this->meshes[0]->rotate(glm::vec3(0.0f, 0.01f, 0.0f));
 }
 
 // Render function

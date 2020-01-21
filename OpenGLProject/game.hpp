@@ -7,6 +7,7 @@
 #include "texture.hpp"
 #include "material.hpp"
 #include "mesh.hpp"
+#include "camera.hpp"
 
 // ENUMS
 enum ShaderEnum{ SHADER_CORE_PROGRAM = 0 };
@@ -45,6 +46,9 @@ private:
     double mouseOffsetX;
     double mouseOffsetY;
     bool firstMouse;
+
+    // Camera
+    Camera camera;
 
     // Matrices
     glm::mat4 viewMatrix;
