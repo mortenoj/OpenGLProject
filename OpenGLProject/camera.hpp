@@ -3,8 +3,8 @@
 #include <GL/glew.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
-
 #include <iostream>
+
 enum Direction {
     FORWARD = 0,
     BACKWARD = 1,

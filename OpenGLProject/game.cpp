@@ -168,7 +168,7 @@ void Game::initMaterials() {
 }
 
 void Game::initModels() {
-    Pyramid mesh = Pyramid();
+    Cube mesh = Cube();
 
     std::vector<Mesh*> meshes;
     meshes.push_back(
@@ -203,6 +203,20 @@ void Game::initModels() {
                     this->textures[TEX_CRATE_SPECULAR],
                     meshes
                 ));
+
+    //for ( GLuint i = 0; i < 16; i++) {
+        //for ( GLuint j = 0; j < 4; j++) {
+            //for ( GLuint k = 0; k < 16; k++) {
+                //this->models.push_back(new Model(
+                                //glm::vec3(1.0f * i, -1.0f * j, 1.0f * k),
+                                //this->materials[0],
+                                //this->textures[TEX_CRATE],
+                                //this->textures[TEX_CRATE_SPECULAR],
+                                //meshes
+                            //));
+            //}
+        //}
+    //}
 
     for (auto* &elem : meshes) {
         delete elem;

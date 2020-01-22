@@ -57,6 +57,7 @@ void main() {
             vec4(ambientFinal,  1.0f) +
             vec4(diffuseFinal,  1.0f) +
             vec4(specularFinal, 1.0f)
+            //vec4(vec3(1.0f, 1.0f, 1.0f), 1.0f)
         );
 }
 

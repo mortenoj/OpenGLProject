@@ -2,7 +2,6 @@
 
 #include "mesh.hpp"
 #include "texture.hpp"
-#include "shader.hpp"
 #include "material.hpp"
 
 class Model {

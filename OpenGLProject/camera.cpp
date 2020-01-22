@@ -12,7 +12,7 @@ Camera::Camera(glm::vec3 position, glm::vec3 direction, glm::vec3 worldUp) {
     this->viewMatrix = glm::mat4(1.0f);
 
     this->movementSpeed = 3.0f;
-    this->sensitivity = 50.0f;
+    this->sensitivity = 10.0f;
 
     this->pitch = 0.0f;
     this->yaw = -90.0f;

@@ -116,16 +116,25 @@ Pyramid::Pyramid(): Primitive() {
 Cube::Cube() : Primitive() {
     Vertex vertices[] = {
         //Position								//Color							//Texcoords					//Normals
+        //Front top left
         { glm::vec3(-0.5f, 0.5f, 0.5f),			glm::vec3(1.f, 0.f, 0.f),		glm::vec2(0.f, 1.f),		glm::vec3(0.f, 0.f, 1.f) },
+        // Front Bottom left
         { glm::vec3(-0.5f, -0.5f, 0.5f),		glm::vec3(0.f, 1.f, 0.f),		glm::vec2(0.f, 0.f),		glm::vec3(0.f, 0.f, 1.f) },
+        // Front Bottom right
         { glm::vec3(0.5f, -0.5f, 0.5f),			glm::vec3(0.f, 0.f, 1.f),		glm::vec2(1.f, 0.f),		glm::vec3(0.f, 0.f, 1.f) },
+        // Front Top right
         { glm::vec3(0.5f, 0.5f, 0.5f),			glm::vec3(1.f, 1.f, 0.f),		glm::vec2(1.f, 1.f),		glm::vec3(0.f, 0.f, 1.f) },
 
+        // Back top right
         { glm::vec3(0.5f, 0.5f, -0.5f),			glm::vec3(1.f, 0.f, 0.f),		glm::vec2(0.f, 1.f),		glm::vec3(0.f, 0.f, -1.f) },
+        // Back bottom right
         { glm::vec3(0.5f, -0.5f, -0.5f),		glm::vec3(0.f, 1.f, 0.f),		glm::vec2(0.f, 0.f),		glm::vec3(0.f, 0.f, -1.f) },
+        // Back bottom left
         { glm::vec3(-0.5f, -0.5f, -0.5f),		glm::vec3(0.f, 0.f, 1.f),		glm::vec2(1.f, 0.f),		glm::vec3(0.f, 0.f, -1.f) },
+        // Back top left
         { glm::vec3(-0.5f, 0.5f, -0.5f),		glm::vec3(1.f, 1.f, 0.f),		glm::vec2(1.f, 1.f),		glm::vec3(0.f, 0.f, -1.f) }
     };
+
     unsigned nrOfVertices = sizeof(vertices) / sizeof(Vertex);
 
     GLuint indices[] = {
