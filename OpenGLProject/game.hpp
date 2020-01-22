@@ -4,9 +4,7 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
-#include "texture.hpp"
-#include "material.hpp"
-#include "mesh.hpp"
+#include "model.hpp"
 #include "camera.hpp"
 
 // ENUMS
@@ -70,8 +68,8 @@ private:
     // Material
     std::vector<Material*> materials;
 
-    // Meshes
-    std::vector<Mesh*> meshes;
+    // Models
+    std::vector<Model*> models;
 
     // Lights
     std::vector<glm::vec3*> lights;
@@ -87,7 +85,7 @@ private:
     void initShaders();
     void initTextures();
     void initMaterials();
-    void initMeshes();
+    void initModels();
     void initLights();
     void initUniforms();
 

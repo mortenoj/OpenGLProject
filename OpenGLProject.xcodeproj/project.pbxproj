@@ -23,6 +23,7 @@
 		5ACDD22C23D4BF0E002BC756 /* SOIL2.c in Sources */ = {isa = PBXBuildFile; fileRef = 5ACDD21B23D4BF0E002BC756 /* SOIL2.c */; };
 		5ACDD22D23D4BF0E002BC756 /* etc1_utils.c in Sources */ = {isa = PBXBuildFile; fileRef = 5ACDD22523D4BF0E002BC756 /* etc1_utils.c */; };
 		5ACDD23023D50754002BC756 /* texture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5ACDD22E23D50753002BC756 /* texture.cpp */; };
+		5AE0E36423D86EEF002564D9 /* model.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5AE0E36223D86EEF002564D9 /* model.cpp */; };
 		5AF39C9C23D790CA002B593B /* camera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5AF39C9A23D790CA002B593B /* camera.cpp */; };
 /* End PBXBuildFile section */
 
@@ -90,6 +91,8 @@
 		5ACDD22923D4BF0E002BC756 /* pvr_helper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pvr_helper.h; sourceTree = "<group>"; };
 		5ACDD22E23D50753002BC756 /* texture.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = texture.cpp; sourceTree = "<group>"; };
 		5ACDD22F23D50754002BC756 /* texture.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = texture.hpp; sourceTree = "<group>"; };
+		5AE0E36223D86EEF002564D9 /* model.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = model.cpp; sourceTree = "<group>"; };
+		5AE0E36323D86EEF002564D9 /* model.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = model.hpp; sourceTree = "<group>"; };
 		5AF39C9A23D790CA002B593B /* camera.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = camera.cpp; sourceTree = "<group>"; };
 		5AF39C9B23D790CA002B593B /* camera.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = camera.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -147,6 +150,8 @@
 				5A3F966623D63CA2005DA28B /* game.hpp */,
 				5AF39C9A23D790CA002B593B /* camera.cpp */,
 				5AF39C9B23D790CA002B593B /* camera.hpp */,
+				5AE0E36223D86EEF002564D9 /* model.cpp */,
+				5AE0E36323D86EEF002564D9 /* model.hpp */,
 			);
 			path = OpenGLProject;
 			sourceTree = "<group>";
@@ -248,6 +253,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5AF39C9C23D790CA002B593B /* camera.cpp in Sources */,
+				5AE0E36423D86EEF002564D9 /* model.cpp in Sources */,
 				5ACDD22A23D4BF0E002BC756 /* image_helper.c in Sources */,
 				5ACDD21223D4A531002BC756 /* shader.cpp in Sources */,
 				5ACDD22B23D4BF0E002BC756 /* image_DXT.c in Sources */,

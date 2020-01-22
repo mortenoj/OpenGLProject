@@ -51,7 +51,7 @@ Game::Game(
     this->initShaders();
     this->initTextures();
     this->initMaterials();
-    this->initMeshes();
+    this->initModels();
     this->initLights();
     this->initUniforms();
 }
@@ -61,10 +61,15 @@ Game::~Game() {
     glfwTerminate();
 
     for (size_t i = 0; i < this->shaders.size(); i++) { delete this->shaders[i]; }
+    this->shaders.clear();
     for (size_t i = 0; i < this->textures.size(); i++) { delete this->textures[i]; }
+    this->textures.clear();
     for (size_t i = 0; i < this->materials.size(); i++) { delete this->materials[i]; }
-    for (size_t i = 0; i < this->meshes.size(); i++) { delete this->meshes[i]; }
+    this->materials.clear();
+    for (size_t i = 0; i < this->models.size(); i++) { delete this->models[i]; }
+    this->models.clear();
     for (size_t i = 0; i < this->lights.size(); i++) { delete this->lights[i]; }
+    this->lights.clear();
 }
 
 // Private functions
@@ -162,16 +167,46 @@ void Game::initMaterials() {
         );
 }
 
-void Game::initMeshes() {
+void Game::initModels() {
     Pyramid mesh = Pyramid();
 
-    this->meshes.push_back(
+    std::vector<Mesh*> meshes;
+    meshes.push_back(
             new Mesh(&mesh,
+                glm::vec3(0.0f),
                 glm::vec3(0.0f),
                 glm::vec3(0.0f),
                 glm::vec3(1.0f)
             )
         );
+
+    this->models.push_back(new Model(
+                    glm::vec3(0.0f),
+                    this->materials[0],
+                    this->textures[TEX_CRATE],
+                    this->textures[TEX_CRATE_SPECULAR],
+                    meshes
+                ));
+
+    this->models.push_back(new Model(
+                    glm::vec3(-2.0f, 0.0f, -1.0f),
+                    this->materials[0],
+                    this->textures[TEX_CAT],
+                    this->textures[TEX_CAT_SPECULAR],
+                    meshes
+                ));
+
+    this->models.push_back(new Model(
+                    glm::vec3(2.0f, 1.0f, -2.0f),
+                    this->materials[0],
+                    this->textures[TEX_CRATE],
+                    this->textures[TEX_CRATE_SPECULAR],
+                    meshes
+                ));
+
+    for (auto* &elem : meshes) {
+        delete elem;
+    }
 }
 
 void Game::initLights() {
@@ -276,7 +311,9 @@ void Game::update() {
     this->updateDeltaTime();
     this->updateInput();
 
-    this->meshes[0]->rotate(glm::vec3(0.0f, 0.01f, 0.0f));
+    this->models[0]->rotate(glm::vec3(0.0f, 0.05f, 0.0f));
+    this->models[1]->rotate(glm::vec3(0.0f, 0.1f, 0.0f));
+    this->models[2]->rotate(glm::vec3(0.1f, 0.1f, 0.1f));
 }
 
 // Render function
@@ -288,18 +325,10 @@ void Game::render() {
     // Update uniforms
     this->updateUniforms();
 
-    // Update uniforms
-    this->materials[MAT_1]->sendToShader(*this->shaders[SHADER_CORE_PROGRAM]);
-
-    // Use a program
-    this->shaders[SHADER_CORE_PROGRAM]->use();
-
-    // Activate texture
-    this->textures[TEX_CRATE]->bind(0);
-    this->textures[TEX_CRATE_SPECULAR]->bind(1);
-
-    // Draw
-    this->meshes[MESH_QUAD]->render(this->shaders[SHADER_CORE_PROGRAM]);
+    // Draw models
+    for (auto &model : models) {
+        model->render(this->shaders[SHADER_CORE_PROGRAM]);
+    }
 
     // Cleanup
     glfwSwapBuffers(window);
